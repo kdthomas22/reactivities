@@ -8,6 +8,7 @@ interface IActivityFormProps {
   activity: IActivity;
   createActivity: (activity: IActivity) => void;
   editActivity: (activity: IActivity) => void;
+  submitting: boolean;
 }
 
 const ActivityForm: React.FC<IActivityFormProps> = ({
@@ -15,6 +16,7 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
   activity: initalFormState,
   createActivity,
   editActivity,
+  submitting,
 }) => {
   const initializeForm = () => {
     if (initalFormState) {
@@ -94,7 +96,13 @@ const ActivityForm: React.FC<IActivityFormProps> = ({
           onChange={handleInputChange}
           name="venue"
         />
-        <Button floated="right" positive type="submit" content="Save" />
+        <Button
+          floated="right"
+          positive
+          type="submit"
+          content="Save"
+          loading={submitting}
+        />
         <Button
           floated="right"
           type="button"

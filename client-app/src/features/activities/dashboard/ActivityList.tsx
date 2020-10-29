@@ -1,26 +1,21 @@
-import React, { SyntheticEvent } from "react";
+import React, { useContext } from "react";
 import { Item, Button, Label, Segment } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import { observer } from "mobx-react";
+import ActivityStore from "../../../app/stores/activityStore";
 
-interface IActivityListProps {
-  activities: IActivity[];
-  selectActivity: (id: string) => void;
-  deleteActivity: (e: SyntheticEvent<HTMLButtonElement>, id: string) => void;
-  submitting: boolean;
-  target: string;
-}
-
-const ActivityList: React.FC<IActivityListProps> = ({
-  activities,
-  selectActivity,
-  deleteActivity,
-  submitting,
-  target,
-}) => {
+const ActivityList: React.FC = () => {
+  const activityStore = useContext(ActivityStore);
+  const {
+    selectActivity,
+    activitiesByDate,
+    deleteActivity,
+    submitting,
+    target,
+  } = activityStore;
   return (
     <Segment clearing>
       <Item.Group divided>
-        {activities.map((activity) => (
+        {activitiesByDate.map((activity) => (
           <Item key={activity.id}>
             <Item.Content>
               <Item.Header as="a">{activity.title}</Item.Header>
@@ -40,7 +35,7 @@ const ActivityList: React.FC<IActivityListProps> = ({
                 />
                 <Button
                   name={activity.id}
-                  onClick={(e) => deleteActivity(e, activity.id)}
+                  onClick={(e) => deleteActivity(activity.id, e)}
                   floated="right"
                   content="Delete"
                   negative
@@ -56,4 +51,4 @@ const ActivityList: React.FC<IActivityListProps> = ({
   );
 };
 
-export default ActivityList;
+export default observer(ActivityList);
